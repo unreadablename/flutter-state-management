@@ -8,21 +8,21 @@ import 'package:http/http.dart' as http;
 import 'package:todo_app/src/store.dart';
 import 'package:todo_app/src/models/todo.dart';
 
-import 'package:todo_app/src/actions/list.dart';
+import 'package:todo_app/src/actions/item.dart';
 
-List<Middleware<AppState>> createListMiddleware() {
-  final fetchItems = _createFetchItemsMiddleware();
+List<Middleware<AppState>> createItemMiddleware() {
+  final fetchItem = _createFetchItemMiddleware();
 
   return [
-    TypedMiddleware<AppState, FetchItems>(fetchItems),
+    TypedMiddleware<AppState, FetchItem>(fetchItem),
   ];
 }
 
-Middleware<AppState> _createFetchItemsMiddleware() {
+Middleware<AppState> _createFetchItemMiddleware() {
   return (Store store, dynamic action, NextDispatcher next) async {
     next(action);
     try {
-      String url = 'https://jsonplaceholder.typicode.com/todos';
+      String url = 'https://jsonplaceholder.typicode.com/todos/${action.id}';
       http.Response response = await http.get(url);
 
       int statusCode = response.statusCode;
@@ -31,11 +31,11 @@ Middleware<AppState> _createFetchItemsMiddleware() {
 
       final parsed = json.jsonDecode(response.body);
 
-      final List<ToDo> items = List<ToDo>.from(parsed.map((i) => ToDo.fromJson(i)));
+      final ToDo item = ToDo.fromJson(parsed);
 
-      store.dispatch(FetchItemsSuccess(items));
+      store.dispatch(FetchItemSuccess(item));
     } catch (error) {
-      store.dispatch(FetchItemsFailure(error));
+      store.dispatch(FetchItemFailure(error));
     }
     // next(action);
   };

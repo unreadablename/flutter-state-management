@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:todo_app/src/actions/list.dart';
+import 'package:todo_app/src/pages/item.dart';
 
 import 'package:todo_app/src/store.dart';
 import 'package:todo_app/src/models/todo.dart';
@@ -16,6 +17,7 @@ class ListPage extends StatelessWidget {
     return StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       onInit: (store) => store.dispatch(FetchItems()),
+      // onWillChange: (vm1) => print(vm1),
       builder: (BuildContext context, _ViewModel vm) {
         return Scaffold(
           appBar: AppBar(
@@ -79,7 +81,9 @@ class ListPage extends StatelessWidget {
                 },
                 child: ListTile(
                   title: Text('${item.title}'),
-                  onTap: () => {Navigator.of(context).pushNamed('/item')},
+                  onTap: () => {
+                    Navigator.of(context).pushNamed('/item', arguments: ItemPageArguments(item.id))
+                  },
                 ),
               );
             },
@@ -105,6 +109,11 @@ class _ViewModel {
     @required this.isFetching,
     @required this.onRemove,
   });
+
+  // @override
+  // String toString() {
+  //   return '_ViewModel{items: ${items.length}, isFetching: $isFetching }';
+  // }
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(

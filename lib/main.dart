@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 // Application
 import 'package:todo_app/src/store.dart';
 import 'package:todo_app/src/pages/list.dart';
+import 'package:todo_app/src/pages/item.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (BuildContext context) => ListPage(),
+          '/item':  (BuildContext context) => ItemPage(),
         },
       ),
     );
