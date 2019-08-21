@@ -17,11 +17,10 @@ class ListPage extends StatelessWidget {
     return StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       onInit: (store) => store.dispatch(FetchItems()),
-      // onWillChange: (vm1) => print(vm1),
       builder: (BuildContext context, _ViewModel vm) {
         return Scaffold(
           appBar: AppBar(
-            // title: Text(title),
+            title: Text('ToDo List'),
           ),
           body: vm.isFetching ?
             Center(
@@ -36,16 +35,16 @@ class ListPage extends StatelessWidget {
                 key: Key(item.id),
                 background: Container(
                   padding: EdgeInsets.all(8.0),
-                  color: Colors.green,
+                  color: item.isDone ? Colors.blueGrey : Colors.green,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Icon(
-                        Icons.done,
+                        item.isDone ? Icons.undo : Icons.done,
                         color: Colors.white,
                       ),
                       Text(
-                        'Complete',
+                        !item.isDone ? 'Done' : 'Undone',
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -71,17 +70,12 @@ class ListPage extends StatelessWidget {
                 onDismissed: (direction) {
                   if (direction == DismissDirection.endToStart) {
                     vm.onRemove(item.id);
-                    // // Show a snackbar. This snackbar could also contain "Undo" actions.
-                    // Scaffold.of(context)
-                    //     .showSnackBar(SnackBar(content: Text("$item removed")));
                   } else if (direction == DismissDirection.startToEnd) {
-                    // Show a snackbar. This snackbar could also contain "Undo" actions.
-                    Scaffold.of(context)
-                        .showSnackBar(SnackBar(content: Text("$item done")));
+                    vm.onComplete(item.id, !item.isDone);
                   }
                 },
                 child: ListTile(
-                  title: Text('${item.title}'),
+                  title: Text('${item.title}', style: TextStyle(decoration: item.isDone ? TextDecoration.lineThrough : TextDecoration.none)),
                   onTap: () => {
                     Navigator.of(context).pushNamed('/item', arguments: ItemPageArguments(item.id))
                   },
@@ -104,13 +98,13 @@ class _ViewModel {
   final List<ToDo> items;
   final bool isFetching;
   final Function(String) onRemove;
-  final Function(String) onResolve;
+  final Function(String, bool) onComplete;
 
   _ViewModel({
     @required this.items,
     @required this.isFetching,
     @required this.onRemove,
-    @required this.onResolve,
+    @required this.onComplete,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -118,7 +112,7 @@ class _ViewModel {
       items: store.state.list.items,
       isFetching: store.state.list.isFetching ?? false,
       onRemove: (String id) => store.dispatch(RemoveItem(id)),
-      onResolve: (String id) => store.dispatch(CompleteItem(id)),
+      onComplete: (String id, bool isDone) => store.dispatch(DoneItem(id, isDone: isDone)),
     );
   }
 }

@@ -1,16 +1,19 @@
 class ToDo {
   final String id;
   final String title;
-  final bool isCompleted;
+  final String description;
+  final bool isDone;
 
   ToDo({
     this.id,
     this.title,
-    this.isCompleted = false,
+    this.isDone = false,
+    this.description = '',
   });
 
   ToDo.fromJson(Map<String, dynamic> json)
       : id = json['id'].toString(),
         title = json['title'],
-        isCompleted = json['isCompleted'];
+        isDone = json['isDone'] ?? false,
+        description = json['description'] ?? '';
 }

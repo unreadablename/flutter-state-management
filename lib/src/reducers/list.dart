@@ -10,6 +10,7 @@ final listReducer = combineReducers<ListReduxState>([
   TypedReducer<ListReduxState, FetchItemsFailure>(_fetchItemsFailure),
   TypedReducer<ListReduxState, FetchItemsSuccess>(_fetchItemsSuccess),
   TypedReducer<ListReduxState, RemoveItem>(_removeItem),
+  TypedReducer<ListReduxState, DoneItem>(_doneItem),
 ]);
 
 ListReduxState _fetchItems(ListReduxState state, FetchItems action) {
@@ -36,7 +37,12 @@ ListReduxState _fetchItemsSuccess(ListReduxState state, FetchItemsSuccess action
 
 ListReduxState _removeItem(ListReduxState state, RemoveItem action) {
   return state.copyWith(
-    // items: state.items.where((i) => i.id != action.id),
+    isFetching: true,
+  );
+}
+
+ListReduxState _doneItem(ListReduxState state, DoneItem action) {
+  return state.copyWith(
     isFetching: true,
   );
 }

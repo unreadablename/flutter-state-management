@@ -60,31 +60,32 @@ class RemoveItemFailure {
   }
 }
 
-class CompleteItem {
+class DoneItem {
   final String id;
+  final bool isDone;
 
-  CompleteItem(this.id);
+  DoneItem(this.id, { this.isDone = true });
 
   @override
   String toString() {
-    return 'CompleteItem{id: $id}';
+    return 'DoneItem{id: $id, isDone: $isDone}';
   }
 }
 
-class CompleteItemSuccess {
+class DoneItemSuccess {
   @override
   String toString() {
-    return 'CompleteItemSuccess{}';
+    return 'DoneItemSuccess{}';
   }
 }
 
-class CompleteItemFailure {
+class DoneItemFailure {
   final Error error;
 
-  CompleteItemFailure(this.error);
+  DoneItemFailure(this.error);
 
   @override
   String toString() {
-    return 'CompleteItemFailure{error: $error}';
+    return 'DoneItemFailure{error: $error}';
   }
 }
