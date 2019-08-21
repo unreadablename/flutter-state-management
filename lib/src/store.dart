@@ -53,6 +53,6 @@ Store<AppState> createStore () {
     middleware: []
       ..addAll(createListMiddleware())
       ..addAll(createItemMiddleware())
-      ..add(new LoggingMiddleware.printer()),
+      ..add(LoggingMiddleware.printer()),
   );
 }

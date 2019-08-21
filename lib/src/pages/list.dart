@@ -70,9 +70,10 @@ class ListPage extends StatelessWidget {
                 ),
                 onDismissed: (direction) {
                   if (direction == DismissDirection.endToStart) {
-                    // Show a snackbar. This snackbar could also contain "Undo" actions.
-                    Scaffold.of(context)
-                        .showSnackBar(SnackBar(content: Text("$item removed")));
+                    vm.onRemove(item.id);
+                    // // Show a snackbar. This snackbar could also contain "Undo" actions.
+                    // Scaffold.of(context)
+                    //     .showSnackBar(SnackBar(content: Text("$item removed")));
                   } else if (direction == DismissDirection.startToEnd) {
                     // Show a snackbar. This snackbar could also contain "Undo" actions.
                     Scaffold.of(context)
@@ -103,25 +104,21 @@ class _ViewModel {
   final List<ToDo> items;
   final bool isFetching;
   final Function(String) onRemove;
+  final Function(String) onResolve;
 
   _ViewModel({
     @required this.items,
     @required this.isFetching,
     @required this.onRemove,
+    @required this.onResolve,
   });
-
-  // @override
-  // String toString() {
-  //   return '_ViewModel{items: ${items.length}, isFetching: $isFetching }';
-  // }
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       items: store.state.list.items,
       isFetching: store.state.list.isFetching ?? false,
-      onRemove: (String id) {
-        store.dispatch(RemoveItem(id));
-      },
+      onRemove: (String id) => store.dispatch(RemoveItem(id)),
+      onResolve: (String id) => store.dispatch(ResolveItem(id)),
     );
   }
 }

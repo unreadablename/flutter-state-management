@@ -23,13 +23,24 @@ class ItemPage extends StatelessWidget {
       builder: (BuildContext context, _ViewModel vm) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(args.id),
+            // title: Text(args.id),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.check),
+                onPressed: () => {},
+              ),
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () => {},
+              ),
+            ],
           ),
           body: vm.isFetching ?
             Center(
               child: CircularProgressIndicator(),
             ) :
             Container(
+              padding: const EdgeInsets.all(16.0),
               child: Text(vm.item?.title ?? ''),
             ),
         );

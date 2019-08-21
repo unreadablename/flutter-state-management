@@ -36,6 +36,7 @@ ListReduxState _fetchItemsSuccess(ListReduxState state, FetchItemsSuccess action
 
 ListReduxState _removeItem(ListReduxState state, RemoveItem action) {
   return state.copyWith(
-    items: state.items.where((i) => i.id != action.id),
+    // items: state.items.where((i) => i.id != action.id),
+    isFetching: true,
   );
 }

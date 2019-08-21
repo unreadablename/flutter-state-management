@@ -42,6 +42,24 @@ class RemoveItem {
   }
 }
 
+class RemoveItemSuccess {
+  @override
+  String toString() {
+    return 'RemoveItemSuccess{}';
+  }
+}
+
+class RemoveItemFailure {
+  final Error error;
+
+  RemoveItemFailure(this.error);
+
+  @override
+  String toString() {
+    return 'RemoveItemFailure{error: $error}';
+  }
+}
+
 class ResolveItem {
   final String id;
 
@@ -50,5 +68,23 @@ class ResolveItem {
   @override
   String toString() {
     return 'ResolveItem{id: $id}';
+  }
+}
+
+class ResolveItemSuccess {
+  @override
+  String toString() {
+    return 'ResolveItemSuccess{}';
+  }
+}
+
+class ResolveItemFailure {
+  final Error error;
+
+  ResolveItemFailure(this.error);
+
+  @override
+  String toString() {
+    return 'ResolveItemFailure{error: $error}';
   }
 }
