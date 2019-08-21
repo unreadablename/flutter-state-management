@@ -45,7 +45,7 @@ class ListPage extends StatelessWidget {
                         color: Colors.white,
                       ),
                       Text(
-                        'Done',
+                        'Complete',
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -118,7 +118,7 @@ class _ViewModel {
       items: store.state.list.items,
       isFetching: store.state.list.isFetching ?? false,
       onRemove: (String id) => store.dispatch(RemoveItem(id)),
-      onResolve: (String id) => store.dispatch(ResolveItem(id)),
+      onResolve: (String id) => store.dispatch(CompleteItem(id)),
     );
   }
 }

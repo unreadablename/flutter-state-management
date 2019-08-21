@@ -13,15 +13,15 @@ import 'package:todo_app/src/actions/list.dart';
 List<Middleware<AppState>> createListMiddleware() {
   final fetchItems = _createFetchItemsMiddleware();
   final removeItem = _createRemoveItemMiddleware();
-  final resolveItem = _createResolveItemMiddleware();
+  final completeItem = _createCompleteItemMiddleware();
   final success = _createSuccessMiddleware();
 
   return [
     TypedMiddleware<AppState, FetchItems>(fetchItems),
     TypedMiddleware<AppState, RemoveItem>(removeItem),
-    TypedMiddleware<AppState, ResolveItem>(resolveItem),
+    TypedMiddleware<AppState, CompleteItem>(completeItem),
     TypedMiddleware<AppState, RemoveItemSuccess>(success),
-    TypedMiddleware<AppState, ResolveItemSuccess>(success),
+    TypedMiddleware<AppState, CompleteItemSuccess>(success),
   ];
 }
 
@@ -29,7 +29,7 @@ Middleware<AppState> _createFetchItemsMiddleware() {
   return (Store store, dynamic action, NextDispatcher next) async {
     next(action);
     try {
-      String url = 'https://jsonplaceholder.typicode.com/todos';
+      String url = 'https://us-central1-experiments-1dbbd.cloudfunctions.net/todos';
       http.Response response = await http.get(url);
 
       int statusCode = response.statusCode;
@@ -51,7 +51,7 @@ Middleware<AppState> _createRemoveItemMiddleware() {
   return (Store store, dynamic action, NextDispatcher next) async {
     next(action);
     try {
-      String url = 'https://jsonplaceholder.typicode.com/todos/${action.id}';
+      String url = 'https://us-central1-experiments-1dbbd.cloudfunctions.net/todos/${action.id}';
       http.Response response = await http.delete(url);
 
       // int statusCode = response.statusCode;
@@ -68,17 +68,17 @@ Middleware<AppState> _createRemoveItemMiddleware() {
   };
 }
 
-Middleware<AppState> _createResolveItemMiddleware() {
+Middleware<AppState> _createCompleteItemMiddleware() {
   return (Store store, dynamic action, NextDispatcher next) async {
     next(action);
     try {
-      String url = 'https://jsonplaceholder.typicode.com/todos/${action.id}';
+      String url = 'https://us-central1-experiments-1dbbd.cloudfunctions.net/todos/${action.id}';
       http.Response response = await http.patch(url, body: { 'completed': true });
       print(response.body);
 
-      store.dispatch(ResolveItemSuccess());
+      store.dispatch(CompleteItemSuccess());
     } catch (error) {
-      store.dispatch(ResolveItemFailure(error));
+      store.dispatch(CompleteItemFailure(error));
     }
   };
 }

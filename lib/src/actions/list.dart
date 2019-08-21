@@ -60,31 +60,31 @@ class RemoveItemFailure {
   }
 }
 
-class ResolveItem {
+class CompleteItem {
   final String id;
 
-  ResolveItem(this.id);
+  CompleteItem(this.id);
 
   @override
   String toString() {
-    return 'ResolveItem{id: $id}';
+    return 'CompleteItem{id: $id}';
   }
 }
 
-class ResolveItemSuccess {
+class CompleteItemSuccess {
   @override
   String toString() {
-    return 'ResolveItemSuccess{}';
+    return 'CompleteItemSuccess{}';
   }
 }
 
-class ResolveItemFailure {
+class CompleteItemFailure {
   final Error error;
 
-  ResolveItemFailure(this.error);
+  CompleteItemFailure(this.error);
 
   @override
   String toString() {
-    return 'ResolveItemFailure{error: $error}';
+    return 'CompleteItemFailure{error: $error}';
   }
 }
