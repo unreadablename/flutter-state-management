@@ -44,13 +44,50 @@ class RemoveItem {
   }
 }
 
-class ResolveItem {
-  final String id;
+class RemoveItemSuccess {
+  @override
+  String toString() {
+    return 'RemoveItemSuccess{}';
+  }
+}
 
-  ResolveItem(this.id);
+class RemoveItemFailure {
+  final Error error;
+
+  RemoveItemFailure(this.error);
 
   @override
   String toString() {
-    return 'ResolveItem{id: $id}';
+    return 'RemoveItemFailure{error: $error}';
+  }
+}
+
+class DoneItem {
+  final String id;
+  final bool isDone;
+
+  DoneItem(this.id, { this.isDone = true });
+
+  @override
+  String toString() {
+    return 'DoneItem{id: $id, isDone: $isDone}';
+  }
+}
+
+class DoneItemSuccess {
+  @override
+  String toString() {
+    return 'DoneItemSuccess{}';
+  }
+}
+
+class DoneItemFailure {
+  final Error error;
+
+  DoneItemFailure(this.error);
+
+  @override
+  String toString() {
+    return 'DoneItemFailure{error: $error}';
   }
 }

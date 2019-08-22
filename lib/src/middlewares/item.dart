@@ -12,9 +12,13 @@ import 'package:todo_app/src/actions/item.dart';
 
 List<Middleware<AppState>> createItemMiddleware() {
   final fetchItem = _createFetchItemMiddleware();
+  final doneItem = _createDoneItemMiddleware();
+  final success = _createSuccessMiddleware();
 
   return [
     TypedMiddleware<AppState, FetchItem>(fetchItem),
+    TypedMiddleware<AppState, DoneItem>(doneItem),
+    TypedMiddleware<AppState, DoneItemSuccess>(success),
   ];
 }
 
@@ -22,7 +26,8 @@ Middleware<AppState> _createFetchItemMiddleware() {
   return (Store store, dynamic action, NextDispatcher next) async {
     next(action);
     try {
-      String url = 'https://jsonplaceholder.typicode.com/todos/${action.id}';
+      String url =
+          'https://us-central1-experiments-1dbbd.cloudfunctions.net/todos/${action.id}';
       http.Response response = await http.get(url);
 
       int statusCode = response.statusCode;
@@ -37,6 +42,34 @@ Middleware<AppState> _createFetchItemMiddleware() {
     } catch (error) {
       store.dispatch(FetchItemFailure(error));
     }
-    // next(action);
   };
 }
+
+Middleware<AppState> _createDoneItemMiddleware() {
+  return (Store store, dynamic action, NextDispatcher next) async {
+    next(action);
+    try {
+      String url =
+          'https://us-central1-experiments-1dbbd.cloudfunctions.net/todos/${action.id}';
+      Map<String, String> headers = {"Content-type": "application/json"};
+      http.Response response = await http.patch(
+        url,
+        headers: headers,
+        body: json.jsonEncode({'isDone': action.isDone}),
+      );
+
+      store.dispatch(DoneItemSuccess());
+    } catch (error) {
+      store.dispatch(DoneItemFailure(error));
+    }
+  };
+}
+
+Middleware<AppState> _createSuccessMiddleware() {
+  return (Store<AppState> store, dynamic action, NextDispatcher next) async {
+    next(action);
+
+    store.dispatch(FetchItem(store.state.item.item.id));
+  };
+}
+

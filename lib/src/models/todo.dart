@@ -16,4 +16,9 @@ class ToDo {
         title = json['title'],
         isDone = json['isDone'] ?? false,
         description = json['description'] ?? '';
+
+  @override
+  String toString() {
+    return 'ToDo{id: $id, title: $title}';
+  }
 }

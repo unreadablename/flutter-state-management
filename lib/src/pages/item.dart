@@ -26,12 +26,8 @@ class ItemPage extends StatelessWidget {
             // title: Text(args.id),
             actions: <Widget>[
               IconButton(
-                icon: Icon(Icons.check),
-                onPressed: () => {},
-              ),
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () => {},
+                icon: Icon((vm.item?.isDone ?? false) ? Icons.undo : Icons.done),
+                onPressed: () => vm.onDone(vm.item.id, !vm.item.isDone),
               ),
             ],
           ),
@@ -41,7 +37,14 @@ class ItemPage extends StatelessWidget {
             ) :
             Container(
               padding: const EdgeInsets.all(16.0),
-              child: Text(vm.item?.title ?? ''),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(vm.item?.title ?? 'hello'),
+                  SizedBox(height: 16.0),
+                  Text(vm.item?.description ?? 'hello'),
+                ],
+              )
             ),
         );
       },
@@ -52,26 +55,19 @@ class ItemPage extends StatelessWidget {
 class _ViewModel {
   final ToDo item;
   final bool isFetching;
-  final Function(String) onRemove;
+  final Function(String, bool) onDone;
 
   _ViewModel({
     @required this.item,
     @required this.isFetching,
-    @required this.onRemove,
+    @required this.onDone,
   });
-
-  // @override
-  // String toString() {
-  //   return '_ViewModel{items: ${items.length}, isFetching: $isFetching }';
-  // }
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       item: store.state.item.item,
       isFetching: store.state.item.isFetching ?? false,
-      onRemove: (String id) {
-        store.dispatch(RemoveItem(id));
-      },
+      onDone: (String id, bool isDone) => store.dispatch(DoneItem(id, isDone: isDone)),
     );
   }
 }

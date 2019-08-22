@@ -71,7 +71,7 @@ class ListPage extends StatelessWidget {
                   if (direction == DismissDirection.endToStart) {
                     vm.onRemove(item.id);
                   } else if (direction == DismissDirection.startToEnd) {
-                    vm.onComplete(item.id, !item.isDone);
+                    vm.onDone(item.id, !item.isDone);
                   }
                 },
                 child: ListTile(
@@ -98,13 +98,13 @@ class _ViewModel {
   final List<ToDo> items;
   final bool isFetching;
   final Function(String) onRemove;
-  final Function(String, bool) onComplete;
+  final Function(String, bool) onDone;
 
   _ViewModel({
     @required this.items,
     @required this.isFetching,
     @required this.onRemove,
-    @required this.onComplete,
+    @required this.onDone,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -112,7 +112,7 @@ class _ViewModel {
       items: store.state.list.items,
       isFetching: store.state.list.isFetching ?? false,
       onRemove: (String id) => store.dispatch(RemoveItem(id)),
-      onComplete: (String id, bool isDone) => store.dispatch(DoneItem(id, isDone: isDone)),
+      onDone: (String id, bool isDone) => store.dispatch(DoneItem(id, isDone: isDone)),
     );
   }
 }

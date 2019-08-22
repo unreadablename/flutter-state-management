@@ -9,7 +9,7 @@ final itemReducer = combineReducers<ItemReduxState>([
   TypedReducer<ItemReduxState, FetchItem>(_fetchItem),
   TypedReducer<ItemReduxState, FetchItemFailure>(_fetchItemFailure),
   TypedReducer<ItemReduxState, FetchItemSuccess>(_fetchItemSuccess),
-  // TypedReducer<ItemReduxState, RemoveItem>(_removeItem),
+  TypedReducer<ItemReduxState, DoneItem>(_doneItem),
 ]);
 
 ItemReduxState _fetchItem(ItemReduxState state, FetchItem action) {
@@ -38,8 +38,8 @@ ItemReduxState _fetchItemSuccess(
   );
 }
 
-// ItemReduxState _removeItem(ItemReduxState state, RemoveItem action) {
-//   return state.copyWith(
-//     items: state.items.where((i) => i.id != action.id),
-//   );
-// }
+ItemReduxState _doneItem(ItemReduxState state, DoneItem action) {
+  return state.copyWith(
+    isFetching: true,
+  );
+}
